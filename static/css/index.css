@@ -109,7 +109,7 @@
     line-height: 40px;
     border-radius: 50%;
     color: #ffffff;
-    transition: all 0.5s ease;
+    transition: all 0.3s ease;
   }
 
   .footer-col .social-links a:hover{
