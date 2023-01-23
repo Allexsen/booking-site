@@ -4,8 +4,10 @@ import "github.com/gin-gonic/gin"
 
 func Init() {
 	gin.ForceConsoleColor()
-	router := gin.Default()
-	router.GET("/", func(c *gin.Context) {
-		c.File("/static/html/index.html")
+	r := gin.Default()
+	r.GET("/", func(c *gin.Context) {
+		c.String(200, "Landing Page Hit")
 	})
+
+	r.Run(":5000")
 }
