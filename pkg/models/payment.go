@@ -8,5 +8,6 @@ type Payment struct {
 	BookingID int
 	Method    string
 	Amount    int
-	Date      time.Time
+	DateTime  time.Time
+	Refunded  bool
 }
