@@ -6,6 +6,7 @@ type Token struct {
 	PaymentID int
 	BookingID int
 	ReviewID  int
+	Email     string
 	CanReview bool
 	CanRefund bool
 }
