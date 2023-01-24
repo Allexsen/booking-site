@@ -1,6 +1,8 @@
 .navbar {
     background-color: #333;
     overflow: hidden;
+    position: sticky;
+    top: 0;
   }
 
   .navbar a {
@@ -99,7 +101,7 @@
     padding-left: 8px;
   }
 
-  .footer-col .social-links a{
+  .footer-col .sociallinks a{
     display: inline-block;
     height: 40px;
     width: 40px;
@@ -112,8 +114,12 @@
     transition: all 0.3s ease;
   }
 
-  .footer-col .social-links a:hover{
+  .footer-col .sociallinks a:hover{
     color: #24262b;
     background-color: #ffffff;
   }
   
+.main{
+  display: flex;
+  justify-content: flex-end;
+}
