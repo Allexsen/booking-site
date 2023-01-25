@@ -15,7 +15,7 @@ type Booking struct {
 	Status    string       `json:"status"`
 }
 
-func (b Booking) Store() error {
+func (b *Booking) Store() error {
 	db := database.GetDB()
 	q := `ISNERT INTO bookings(start_date, end_date, status_id)
 		VALUES(?, ?, ?)`
@@ -24,7 +24,7 @@ func (b Booking) Store() error {
 	return err
 }
 
-func (b Booking) Activate() error {
+func (b *Booking) Activate() error {
 	db := database.GetDB()
 	q := `UPDATE bookings
 		SET status_id=2
@@ -33,7 +33,7 @@ func (b Booking) Activate() error {
 	return err
 }
 
-func (b Booking) Cancel() error {
+func (b *Booking) Cancel() error {
 	db := database.GetDB()
 	q := `UPDATE bookings
 		SET status_id="3"
@@ -43,7 +43,7 @@ func (b Booking) Cancel() error {
 	return err
 }
 
-func (b Booking) Archive() error {
+func (b *Booking) Archive() error {
 	db := database.GetDB()
 	q := `UPDATE bookings
 		SET status_id=4
