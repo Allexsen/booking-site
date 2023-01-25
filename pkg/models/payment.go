@@ -16,7 +16,7 @@ type Payment struct {
 	Refunded        bool
 }
 
-func (p Payment) Store() error {
+func (p *Payment) Store() error {
 	db := database.GetDB()
 	q := `INSERT INTO payments(booking_id, method, amount, transaction_time)
 		VALUES(?, ?, ?, ?)`
@@ -25,7 +25,7 @@ func (p Payment) Store() error {
 	return err
 }
 
-func (p Payment) Refund() error {
+func (p *Payment) Refund() error {
 	db := database.GetDB()
 	q := `UPDATE payments
 		SET refunded=true
