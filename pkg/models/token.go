@@ -24,7 +24,7 @@ func (t *Token) generateID() {
 
 	// Doesn't even need to check if it's duplicate
 	// chance of having duplicate is
-	// (number of existing referrals)/62^20
+	// (number of existing tokens)/62^20
 	// Basically impossible
 	rand.Seed(time.Now().Unix())
 	var token [20]byte
