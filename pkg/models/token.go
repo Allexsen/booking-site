@@ -10,13 +10,13 @@ import (
 
 // Used to model tokens
 type Token struct {
-	ID         string
-	PaymentID  int
-	BookingID  int
-	ReviewID   sql.NullInt32
-	Email      string
-	Reviewable bool
-	Refundable bool
+	ID         string        `db:"id"`
+	PaymentID  int           `db:"payment_id"`
+	BookingID  int           `db:"booking_id"`
+	ReviewID   sql.NullInt32 `db:"review_id"`
+	Email      string        `db:"email"`
+	Reviewable bool          `db:"reviewable"`
+	Refundable bool          `db:"refundable"`
 }
 
 func (t *Token) generateID() {

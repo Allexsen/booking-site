@@ -8,12 +8,12 @@ import (
 
 // Used to model payments
 type Payment struct {
-	ID              int
-	BookingID       int
-	Method          string
-	Amount          int
-	TransactionTime time.Time
-	Refunded        bool
+	ID              int       `db:"id"`
+	BookingID       int       `db:"booking_id"`
+	Method          string    `db:"method"`
+	Amount          int       `db:"amount"`
+	TransactionTime time.Time `db:"transaction_time"`
+	Refunded        bool      `db:"refunded"`
 }
 
 func (p *Payment) Store() error {

@@ -8,10 +8,10 @@ import (
 
 // Used to model booking
 type Booking struct {
-	ID        int          `db:"id" json:"id"`
+	ID        int          `db:"id" json:"-"`
 	StartDate sql.NullTime `db:"start_date" json:"start_date"`
 	EndDate   sql.NullTime `db:"end_date" json:"end_date"`
-	StatusID  int          `db:"status_id"` // Booked(1), Ongoing(2), Cancelled(3), Archived(4)
+	StatusID  int          `db:"status_id" json:"-"` // Booked(1), Ongoing(2), Cancelled(3), Archived(4)
 	Status    string       `json:"status"`
 }
 

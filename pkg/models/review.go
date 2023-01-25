@@ -4,11 +4,11 @@ import database "github.com/Allexsen/booking-site/db"
 
 // Used to model reviews
 type Review struct {
-	ID        int
-	Rating    int
-	Body      string
-	Author    string
-	BookingID int
+	ID        int    `db:"id" json:"-"`
+	Rating    int    `db:"rating" json:"stars"`
+	Body      string `db:"body" json:"review"`
+	Author    string `db:"author" json:"author"`
+	BookingID int    `db:"booking_id" json:"-"`
 }
 
 func (r *Review) Store() error {
