@@ -9,17 +9,17 @@ import (
 	"github.com/goccy/go-json"
 )
 
-var dir string
+var dirHTML string
 
 func init() {
-	dir = os.Getenv("HTML_DIR_BS")
+	dirHTML = os.Getenv("STATIC_DIR_BS") + "/html"
 }
 
 // Controller and helper functions for bookings
 // Used to process incoming booking requests
 func LoadBookings(c *gin.Context) {
 	if c.GetHeader("Accept") == "text/html" {
-		c.File(dir + "/index.html")
+		c.File(dirHTML + "/index.html")
 		return
 	}
 

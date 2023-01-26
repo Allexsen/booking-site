@@ -1,6 +1,10 @@
 package routes
 
-import "github.com/gin-gonic/gin"
+import (
+	"os"
+
+	"github.com/gin-gonic/gin"
+)
 
 func Init() {
 	gin.ForceConsoleColor()
@@ -9,9 +13,10 @@ func Init() {
 
 	initReviews(r)
 	initBookings(r)
+	initCSS(r)
 
 	r.GET("/", func(c *gin.Context) {
-		c.String(200, "Landing page hit")
+		c.File(os.Getenv("STATIC_DIR_BS") + "/html/index.html")
 	})
 
 	r.Run(":5000")
