@@ -9,9 +9,20 @@ import (
 	"github.com/goccy/go-json"
 )
 
+var dir string
+
+func init() {
+	dir = os.Getenv("HTML_DIR_BS")
+}
+
 // Controller and helper functions for bookings
 // Used to process incoming booking requests
 func LoadBookings(c *gin.Context) {
+	if c.GetHeader("Accept") == "text/html" {
+		c.File(dir + "/index.html")
+		return
+	}
+
 	b, err := models.GetAllBookings()
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
@@ -22,7 +33,5 @@ func LoadBookings(c *gin.Context) {
 		c.AbortWithError(http.StatusInternalServerError, err)
 	}
 
-	dir := os.Getenv("HTML_DIR_BS") + "/index.html"
-	c.File(dir)
 	c.JSON(http.StatusOK, bookings)
 }
