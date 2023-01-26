@@ -16,10 +16,10 @@ type Booking struct {
 	Status    string       `json:"status"`
 }
 
-func GetAllBookings(b *[]Booking) error {
+func GetAllBookings() ([]Booking, error) {
 	db, err := database.Connect()
 	if err != nil {
-		return err
+		return nil, err
 	}
 	defer db.Close()
 
@@ -30,7 +30,7 @@ func GetAllBookings(b *[]Booking) error {
 
 	rows, err := db.Query(q, time.Now())
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	var bookings []Booking
@@ -38,17 +38,18 @@ func GetAllBookings(b *[]Booking) error {
 		var nb Booking
 		err := rows.Scan(&nb.StartDate, &nb.EndDate)
 		if err != nil {
-			return err
+			return nil, err
 		}
 
 		bookings = append(bookings, nb)
 	}
 
-	if rows.Err() == nil {
-		b = &bookings
+	err = rows.Err()
+	if err != nil {
+		return nil, err
 	}
 
-	return rows.Err()
+	return bookings, nil
 }
 
 func (b *Booking) Store() error {
