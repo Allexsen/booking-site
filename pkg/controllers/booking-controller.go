@@ -22,7 +22,7 @@ func LoadBookings(c *gin.Context) {
 		c.AbortWithError(http.StatusInternalServerError, err)
 	}
 
-	dir := os.Getenv("STATIC_DIR_BS") + "/html/bookings.html"
+	dir := os.Getenv("HTML_DIR_BS") + "/index.html"
 	c.File(dir)
 	c.JSON(http.StatusOK, bookings)
 }
