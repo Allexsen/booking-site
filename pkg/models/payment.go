@@ -17,20 +17,30 @@ type Payment struct {
 }
 
 func (p *Payment) Store() error {
-	db := database.GetDB()
+	db, err := database.Connect()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
 	q := `INSERT INTO payments(booking_id, method, amount, transaction_time)
 		VALUES(?, ?, ?, ?)`
 
-	_, err := db.Exec(q, p.BookingID, p.Method, p.Amount, p.TransactionTime)
+	_, err = db.Exec(q, p.BookingID, p.Method, p.Amount, p.TransactionTime)
 	return err
 }
 
 func (p *Payment) Refund() error {
-	db := database.GetDB()
+	db, err := database.Connect()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
 	q := `UPDATE payments
 		SET refunded=true
 		WHERE id=?`
 
-	_, err := db.Exec(q, p.ID)
+	_, err = db.Exec(q, p.ID)
 	return err
 }
