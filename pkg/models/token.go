@@ -36,41 +36,61 @@ func (t *Token) generateID() {
 }
 
 func (t *Token) Store() error {
+	db, err := database.Connect()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
 	t.generateID()
-	db := database.GetDB()
 	q := `INSERT INTO tokens(id, payment_id, booking_id, email, refundable)
 		VALUES(?, ?, ?, ?, ?)`
 
-	_, err := db.Exec(q, t.ID, t.PaymentID, t.BookingID, t.Email, t.Refundable)
+	_, err = db.Exec(q, t.ID, t.PaymentID, t.BookingID, t.Email, t.Refundable)
 	return err
 }
 
 func (t *Token) DeclineRefund() error {
-	db := database.GetDB()
+	db, err := database.Connect()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
 	q := `UPDATE tokens
 		SET refundable=false
 		WHERE id=?`
 
-	_, err := db.Exec(q, t.ID)
+	_, err = db.Exec(q, t.ID)
 	return err
 }
 
 func (t *Token) EnableReview() error {
-	db := database.GetDB()
+	db, err := database.Connect()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
 	q := `UPDATE tokens
 		SET reviewable=true
 		WHERE id=?`
 
-	_, err := db.Exec(q, t.ID)
+	_, err = db.Exec(q, t.ID)
 	return err
 }
 
 func (t *Token) Deactivate() error {
-	db := database.GetDB()
+	db, err := database.Connect()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
 	q := `UPDATE tokens
 		SET refundable=false, reviewable=false
 		WHERE id=?`
 
-	_, err := db.Exec(q, t.ID)
+	_, err = db.Exec(q, t.ID)
 	return err
 }
