@@ -2,6 +2,7 @@ package models
 
 import (
 	"database/sql"
+	"time"
 
 	database "github.com/Allexsen/booking-site/db"
 )
@@ -15,40 +16,95 @@ type Booking struct {
 	Status    string       `json:"status"`
 }
 
+func GetAllBookings(b *[]Booking) error {
+	db, err := database.Connect()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	q := `SELECT start_date, end_date
+		FROM bookings
+		WHERE status_id<3
+		AND end_date>=?`
+
+	rows, err := db.Query(q, time.Now())
+	if err != nil {
+		return err
+	}
+
+	var bookings []Booking
+	for rows.Next() {
+		var nb Booking
+		err := rows.Scan(&nb.StartDate, &nb.EndDate)
+		if err != nil {
+			return err
+		}
+
+		bookings = append(bookings, nb)
+	}
+
+	if rows.Err() == nil {
+		b = &bookings
+	}
+
+	return rows.Err()
+}
+
 func (b *Booking) Store() error {
-	db := database.GetDB()
+	db, err := database.Connect()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
 	q := `ISNERT INTO bookings(start_date, end_date, status_id)
 		VALUES(?, ?, ?)`
 
-	_, err := db.Exec(q, b.StartDate, b.EndDate, b.StatusID)
+	_, err = db.Exec(q, b.StartDate, b.EndDate, b.StatusID)
 	return err
 }
 
 func (b *Booking) Activate() error {
-	db := database.GetDB()
+	db, err := database.Connect()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
 	q := `UPDATE bookings
 		SET status_id=2
 		WHERE id=?`
-	_, err := db.Exec(q, b.ID)
+	_, err = db.Exec(q, b.ID)
 	return err
 }
 
 func (b *Booking) Cancel() error {
-	db := database.GetDB()
+	db, err := database.Connect()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
 	q := `UPDATE bookings
 		SET status_id="3"
 		WHERE id=?`
 
-	_, err := db.Exec(q, b.ID)
+	_, err = db.Exec(q, b.ID)
 	return err
 }
 
 func (b *Booking) Archive() error {
-	db := database.GetDB()
+	db, err := database.Connect()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
 	q := `UPDATE bookings
 		SET status_id=4
 		WHERE id=?`
 
-	_, err := db.Exec(q, b.ID)
+	_, err = db.Exec(q, b.ID)
 	return err
 }
