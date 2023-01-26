@@ -12,10 +12,15 @@ type Review struct {
 }
 
 func (r *Review) Store() error {
-	db := database.GetDB()
+	db, err := database.Connect()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
 	q := `INSERT INTO reviews(rating, body, author, booking_id)
 		VALUES(?, ?, ?, ?)`
 
-	_, err := db.Exec(q, r.Rating, r.Body, r.Author, r.BookingID)
+	_, err = db.Exec(q, r.Rating, r.Body, r.Author, r.BookingID)
 	return err
 }
