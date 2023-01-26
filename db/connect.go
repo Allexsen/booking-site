@@ -7,26 +7,17 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-var (
-	db *sql.DB
-)
+var msn string
 
-func Connect() *sql.DB {
+func init() {
 	user := os.Getenv("SQL_USER")
 	pswd := os.Getenv("SQL_PSWD")
 	adrs := os.Getenv("SQL_ADRS")
 	dbnm := os.Getenv("SQL_DBNM")
-	msn := user + ":" + pswd + "@tcp(" + adrs + ")/" + dbnm
-
-	d, err := sql.Open("mysql", msn)
-	if err != nil {
-		panic(err)
-	}
-
-	db = d
-	return db
+	msn = user + ":" + pswd + "@tcp(" + adrs + ")/" + dbnm
 }
 
-func GetDB() *sql.DB { // return DB instance
-	return db
+func Connect() (*sql.DB, error) {
+	db, err := sql.Open("mysql", msn)
+	return db, err
 }
