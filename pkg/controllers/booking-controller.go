@@ -18,8 +18,8 @@ func init() {
 // Controller and helper functions for bookings
 // Used to process incoming booking requests
 func LoadBookings(c *gin.Context) {
-	if c.GetHeader("Accept") == "text/html" {
-		c.File(dirHTML + "/index.html")
+	if c.GetHeader("Accept") != "application/json" {
+		c.File(dirHTML + "/bookings.html")
 		return
 	}
 

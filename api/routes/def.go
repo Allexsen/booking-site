@@ -15,8 +15,9 @@ func Init() {
 	initBookings(r)
 	initCSS(r)
 
+	dir := os.Getenv("STATIC_DIR_BS")
 	r.GET("/", func(c *gin.Context) {
-		c.File(os.Getenv("STATIC_DIR_BS") + "/html/index.html")
+		c.File(dir + "/html/index.html")
 	})
 
 	r.Run(":5000")
