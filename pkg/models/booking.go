@@ -35,13 +35,13 @@ func GetAllBookings() ([]Booking, error) {
 
 	var bookings []Booking
 	for rows.Next() {
-		var nb Booking
-		err := rows.Scan(&nb.StartDate, &nb.EndDate)
+		var b Booking
+		err := rows.Scan(&b.StartDate, &b.EndDate)
 		if err != nil {
 			return nil, err
 		}
 
-		bookings = append(bookings, nb)
+		bookings = append(bookings, b)
 	}
 
 	err = rows.Err()
