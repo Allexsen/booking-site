@@ -38,9 +38,5 @@ func Init() {
 		c.File(dirHTML + "/index.html")
 	})
 
-	r.NoRoute(func(c *gin.Context) {
-		c.File(dirHTML + "/404.html")
-	})
-
 	r.Run(":5000")
 }
