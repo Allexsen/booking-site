@@ -9,10 +9,16 @@ import (
 	"github.com/goccy/go-json"
 )
 
-var dirHTML string
+var (
+	dir     string
+	dirHTML string
+	dirTMPL string
+)
 
 func init() {
-	dirHTML = os.Getenv("STATIC_DIR_BS") + "/html"
+	dir = os.Getenv("DIR_BS")
+	dirHTML = dir + "/static/html"
+	dirTMPL = dir + "/tmpl"
 }
 
 // Controller and helper functions for bookings
