@@ -6,18 +6,40 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Init() {
+var (
+	dir     string
+	dirHTML string
+	dirCSS  string
+	dirTMPL string
+)
+
+var (
+	r *gin.Engine
+)
+
+func init() {
+	dir = os.Getenv("DIR_BS")
+	dirHTML = dir + "/static/html"
+	dirCSS = dir + "/static/css"
+	dirTMPL = dir + "/tmpl"
+
 	gin.ForceConsoleColor()
-	r := gin.Default()
+	r = gin.Default()
 	r.SetTrustedProxies(nil)
 
-	initReviews(r)
-	initBookings(r)
-	initCSS(r)
+	initReviews()
+	initBookings()
+	initCSS()
+	initTemplates()
+}
 
-	dir := os.Getenv("STATIC_DIR_BS")
+func Init() {
 	r.GET("/", func(c *gin.Context) {
-		c.File(dir + "/html/index.html")
+		c.File(dirHTML + "/index.html")
+	})
+
+	r.NoRoute(func(c *gin.Context) {
+		c.File(dirHTML + "/404.html")
 	})
 
 	r.Run(":5000")

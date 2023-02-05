@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func initBookings(r *gin.Engine) {
+func initBookings() {
 	r.GET("/bookings", controllers.LoadBookings)
 
 	r.POST("/bookings", func(c *gin.Context) {

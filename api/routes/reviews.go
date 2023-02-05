@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func initReviews(r *gin.Engine) {
+func initReviews() {
 	r.GET("/reviews", controllers.LoadReviews)
 
 	r.GET("/reviews/add/:token", func(c *gin.Context) {
