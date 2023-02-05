@@ -16,4 +16,8 @@ func initCSS() {
 	r.GET("/index.css", func(c *gin.Context) {
 		c.File(dirCSS + "/index.css")
 	})
+
+	r.GET("/404.css", func(c *gin.Context) {
+		c.File(dirCSS + "/404.css")
+	})
 }
