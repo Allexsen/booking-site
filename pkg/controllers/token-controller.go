@@ -23,7 +23,7 @@ func DisableToken(c *gin.Context) {
 		c.AbortWithError(http.StatusBadRequest, err)
 	}
 
-	c.File(dirHTML + "/reviews")
+	c.File(dirHTML + "/")
 }
 
 func IsRewieavableToken(c *gin.Context) {
