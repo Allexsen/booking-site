@@ -1,6 +1,8 @@
 package models
 
 import (
+	"strconv"
+
 	database "github.com/Allexsen/booking-site/db"
 )
 
@@ -47,7 +49,33 @@ func GetReviews() ([]Review, error) {
 	return reviews, nil
 }
 
-func (r *Review) Store() error {
+func CreateReview(ratingstr, bidstr, body, author string) (int, error) {
+	rating, err := strconv.Atoi(ratingstr)
+	if err != nil {
+		return -1, err
+	}
+
+	bid, err := strconv.Atoi(bidstr)
+	if err != nil {
+		return -1, err
+	}
+
+	r := Review{
+		Rating:    rating,
+		Body:      body,
+		Author:    author,
+		BookingID: bid,
+	}
+
+	err = r.store()
+	if err != nil {
+		return -1, err
+	}
+
+	return r.ID, nil
+}
+
+func (r *Review) store() error {
 	db, err := database.Connect()
 	if err != nil {
 		return err

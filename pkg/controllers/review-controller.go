@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/Allexsen/booking-site/pkg/models"
@@ -31,9 +32,17 @@ func LoadReviews(c *gin.Context) {
 
 // ToDo:
 func LoadNewReviewPage(c *gin.Context) {
-	// To finish
+	c.File(dirHTML + "/review-new.html")
 }
 
 func AddReview(c *gin.Context) {
-	// To finish
+	rid, err := models.CreateReview(c.Param("rating"), c.Param("booking_id"), c.Param("body"), c.Param("author"))
+	if err != nil {
+		c.AbortWithError(http.StatusInternalServerError, err)
+	}
+
+	// This is a placeholder
+	// Should instead show the new review on top of other reviews
+	fmt.Println(rid)
+	c.File(dirHTML + "/reviews")
 }

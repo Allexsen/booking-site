@@ -38,8 +38,12 @@ func CreateToken(pidstr, bidstr, email string) (string, error) {
 		Refundable: true,
 	}
 
-	token.Store()
-	return token.ID, nil
+	err = token.store()
+	if err != nil {
+		return "", err
+	}
+
+	return token.ID, err
 }
 
 func CheckToken(token string) error {
@@ -74,7 +78,7 @@ func DisableToken(token string) error {
 	return err
 }
 
-func (t *Token) Store() error {
+func (t *Token) store() error {
 	db, err := database.Connect()
 	if err != nil {
 		return err
