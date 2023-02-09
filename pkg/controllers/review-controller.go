@@ -28,3 +28,12 @@ func LoadReviews(c *gin.Context) {
 
 	c.JSON(http.StatusOK, reviews)
 }
+
+// ToDo:
+func LoadNewReviewPage(c *gin.Context) {
+	// To finish
+}
+
+func AddReview(c *gin.Context) {
+	// To finish
+}

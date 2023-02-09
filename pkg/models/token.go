@@ -3,6 +3,7 @@ package models
 import (
 	"database/sql"
 	"math/rand"
+	"strconv"
 	"time"
 
 	database "github.com/Allexsen/booking-site/db"
@@ -19,6 +20,75 @@ type Token struct {
 	Refundable bool          `db:"refundable"`
 }
 
+func CreateToken(pidstr, bidstr, email string) (string, error) {
+	pid, err := strconv.Atoi(pidstr)
+	if err != nil {
+		return "", err
+	}
+
+	bid, err := strconv.Atoi(bidstr)
+	if err != nil {
+		return "", err
+	}
+
+	token := Token{
+		PaymentID:  pid,
+		BookingID:  bid,
+		Email:      email,
+		Refundable: true,
+	}
+
+	token.Store()
+	return token.ID, nil
+}
+
+func CheckToken(token string) error {
+	db, err := database.Connect()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	q := `SELECT id FROM tokens WHERE id=?`
+	_, err = db.Query(q, token)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func DisableToken(token string) error {
+	db, err := database.Connect()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	q := `UPDATE tokens
+	SET refundable=false,
+	reviewable=false,
+	WHERE id=?`
+
+	_, err = db.Exec(q, token)
+	return err
+}
+
+func (t *Token) Store() error {
+	db, err := database.Connect()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	t.generateID()
+	q := `INSERT INTO tokens(id, payment_id, booking_id, email, refundable)
+	VALUES(?, ?, ?, ?, ?)`
+
+	_, err = db.Exec(q, t.ID, t.PaymentID, t.BookingID, t.Email, t.Refundable)
+	return err
+}
+
 func (t *Token) generateID() {
 	charSet := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
@@ -33,64 +103,4 @@ func (t *Token) generateID() {
 	}
 
 	t.ID = string(token[:])
-}
-
-func (t *Token) Store() error {
-	db, err := database.Connect()
-	if err != nil {
-		return err
-	}
-	defer db.Close()
-
-	t.generateID()
-	q := `INSERT INTO tokens(id, payment_id, booking_id, email, refundable)
-		VALUES(?, ?, ?, ?, ?)`
-
-	_, err = db.Exec(q, t.ID, t.PaymentID, t.BookingID, t.Email, t.Refundable)
-	return err
-}
-
-func (t *Token) DeclineRefund() error {
-	db, err := database.Connect()
-	if err != nil {
-		return err
-	}
-	defer db.Close()
-
-	q := `UPDATE tokens
-		SET refundable=false
-		WHERE id=?`
-
-	_, err = db.Exec(q, t.ID)
-	return err
-}
-
-func (t *Token) EnableReview() error {
-	db, err := database.Connect()
-	if err != nil {
-		return err
-	}
-	defer db.Close()
-
-	q := `UPDATE tokens
-		SET reviewable=true
-		WHERE id=?`
-
-	_, err = db.Exec(q, t.ID)
-	return err
-}
-
-func (t *Token) Deactivate() error {
-	db, err := database.Connect()
-	if err != nil {
-		return err
-	}
-	defer db.Close()
-
-	q := `UPDATE tokens
-		SET refundable=false, reviewable=false
-		WHERE id=?`
-
-	_, err = db.Exec(q, t.ID)
-	return err
 }

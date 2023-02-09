@@ -38,9 +38,5 @@ func Init() {
 		c.File(dirHTML + "/index.html")
 	})
 
-	r.GET("/calendar.js", func(c *gin.Context) {
-		c.File(dir + "/js/calendar.js")
-	})
-
 	r.Run(":5000")
 }

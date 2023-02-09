@@ -2,7 +2,6 @@ package routes
 
 import (
 	"github.com/Allexsen/booking-site/pkg/controllers"
-	"github.com/gin-gonic/gin"
 )
 
 func initBookings() {
@@ -10,7 +9,5 @@ func initBookings() {
 
 	r.POST("/bookings", controllers.HandleBooking)
 
-	r.GET("/bookings/refund/:token", func(c *gin.Context) {
-		c.String(200, "Refund hit")
-	})
+	r.GET("/bookings/refund/:token", controllers.DisableToken)
 }
