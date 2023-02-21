@@ -11,5 +11,5 @@ the front-end being incomplete.
 To controll a booking, I used token system instead of registration to ease the process of booking.
 Once the payment is successful, a token can be generated and sent on a provided email.
 This token is used for refunds and booking. Can be refunded 5-10 days before in-date, depending on the duration booked.
-Can add a review after out-date. Once token is used for any of the purposes, it disables and can't be used for anymore.
+Can add a review after out-date. Once token is used for any purpose, it disables and can't be used anymore.
 Refunding causes token to go inactive and free up the booked space.
